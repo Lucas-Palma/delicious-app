@@ -3,6 +3,7 @@ import { useEffect, useState} from 'react';
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/splide/dist/css/splide.min.css';
+import { Link } from "react-router-dom"
 
 function Veggie() {
   const [veggie, setVeggie] = useState([]);
@@ -18,7 +19,7 @@ function Veggie() {
     if(check) {
       setVeggie(JSON.parse(check));
     } else {
-      const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegeterian`);  
+      const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`);  
       const data = await api.json();
 
       localStorage.setItem("veggie", JSON.stringify(data.recipes));
@@ -38,17 +39,19 @@ function Veggie() {
             arrows: false,
             pagination: false,
             drag: "free",
-            gap: "5rem",
+            gap: "0.25rem",
           }}
         >
           {veggie.map((recipe) => {
             return (
               <SplideSlide key={recipe.id}>
-                <Card>
-                  <p>{recipe.title}</p>
-                  <img src={recipe.image} alt={recipe.title} />
-                  <Gradient />
-                </Card>
+                <Link to={"/recipe/" + recipe.id}>
+                  <Card>
+                    <p>{recipe.title}</p>
+                    <img src={recipe.image} alt={recipe.title} />
+                    <Gradient />
+                  </Card>
+                </Link>
               </SplideSlide>
             ); 
           })}
@@ -60,16 +63,21 @@ function Veggie() {
 
 const Wrapper = styled.div`
   margin: 4rem 0rem;
+
+  h3 {
+    margin-bottom: 1rem;
+  }
 `;
 
 const Card = styled.div`
   min-height: 25rem;
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
+  transition: all .4s ease-in-out;
 
   img {
-    border-radius: 2rem;
+    border-radius: 0.5rem;
     position: absolute;
     left: 0;
     width: 100%;
@@ -92,6 +100,9 @@ const Card = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  &:hover{
+    transform: scale(0.95);
   }
 `;
 

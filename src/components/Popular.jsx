@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState} from 'react';
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
+import { Link } from "react-router-dom"
 import '@splidejs/splide/dist/css/splide.min.css';
 
 function Popular() {
@@ -25,7 +26,9 @@ function Popular() {
       localStorage.setItem("popular", JSON.stringify(data.recipes));
       setPopular(data.recipes);
       console.log(data.recipes);
+
     }
+    
 
     
   }
@@ -41,17 +44,19 @@ function Popular() {
             arrows: false,
             pagination: false,
             drag: "free",
-            gap: "5rem",
+            gap: "0.25rem",
           }}
         >
           {popular.map((recipe) => {
             return (
               <SplideSlide key={recipe.id}>
-                <Card>
-                  <p>{recipe.title}</p>
-                  <img src={recipe.image} alt={recipe.title} />
-                  <Gradient />
-                </Card>
+                <Link to={"/recipe/" + recipe.id}>
+                  <Card>
+                    <p>{recipe.title}</p>
+                    <img src={recipe.image} alt={recipe.title} />
+                    <Gradient />
+                  </Card>
+                </Link>
               </SplideSlide>
             ); 
           })}
@@ -63,16 +68,21 @@ function Popular() {
 
 const Wrapper = styled.div`
   margin: 4rem 0rem;
+
+  h3 {
+    margin-bottom: 1rem;
+  }
 `;
 
 const Card = styled.div`
   min-height: 25rem;
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
+  transition: all .4s ease-in-out;
 
   img {
-    border-radius: 2rem;
+    border-radius: 0.5rem;
     position: absolute;
     left: 0;
     width: 100%;
@@ -95,6 +105,9 @@ const Card = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  &:hover{
+    transform: scale(0.95);
   }
 `;
 
